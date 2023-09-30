@@ -2,14 +2,14 @@ export class Board {
   width;
   height;
   boardString = [];
+  countTicks = 0;
   constructor(width, height) {
     this.width = width;
     this.height = height;
     for (let i = 0; i < height; i++) {
-
-      let tempArray=[]
+      let tempArray = [];
       for (let i = 0; i < width; i++) {
-        tempArray.push(['.']);
+        tempArray.push(["."]);
       }
       this.boardString.push(tempArray);
     }
@@ -28,31 +28,30 @@ export class Board {
     return concatenatedString;
   }
 
-
-  drop(block){
-    outerLoop: for (let i = 0; i < this.boardString.length; i++) {
-      for (let j = 0; j < this.boardString[i].length; j++) {
-        if(this.boardString[i][j] != "." ){
-          throw new Error("already falling");
-        }
-      }        
+  drop(block) {
+    if(this.countTicks > 0 && this.countTicks <=3){
+      throw new Error("already falling")
     }
-
-      this.boardString[0][1]=block 
+    this.boardString[0][1] = block;
+    this.countTicks = 1;
   }
 
-
-  tick(){
-    outerLoop: for (let i = 0; i < this.boardString.length; i++) {
-      for (let j = 0; j < this.boardString[i].length; j++) {
-        if(this.boardString[i][j] != "." ){
-          let tempBlock = this.boardString[i][j]
-          this.boardString[i][j]='.'
-          this.boardString[i+1][j]=tempBlock
-          break outerLoop
-        }
-      }        
+  tick() {
+    this.countTicks = this.countTicks + 1;
+    if (this.hasFalling()) {
+      this.boardString.pop();
+      let tempArray = [];
+      for (let i = 0; i < this.width; i++) {
+        tempArray.push(["."]);
+      }
+      this.boardString.unshift(tempArray);
     }
+  }
 
+  hasFalling() {
+    if (this.countTicks > this.height) {
+      return false;
+    }
+    return true;
   }
 }
