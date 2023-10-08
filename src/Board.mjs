@@ -47,6 +47,7 @@ export class Board {
     this.board[this.currentBlockX][this.currentBlockY] = this.board[this.currentBlockX + 1][this.currentBlockY];
     this.board[this.currentBlockX + 1][this.currentBlockY] = currentBlock;
     this.currentBlockX +=1    
+    
   }
 
   hasFalling() {
